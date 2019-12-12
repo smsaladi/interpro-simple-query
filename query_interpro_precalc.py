@@ -36,8 +36,10 @@ import argparse
 import hashlib
 from itertools import chain, islice
 from collections import OrderedDict
+from urllib3.util.retry import Retry
 
 import requests
+from requests.adapters import HTTPAdapter
 import Bio.SeqIO
 import xmltodict
 import ndjson
@@ -58,6 +60,15 @@ def md5seq(seq):
     seq = seq.upper()
     return hashlib.md5(seq.encode('utf-8')).hexdigest().upper()
 
+
+# Set up requests with retries and backoff
+# https://stackoverflow.com/a/35504626/2320823
+sess = requests.Session()
+retries = Retry(total=5,
+                backoff_factor=0.1,
+                status_forcelist=[ 500, 502, 503, 504 ])
+sess.mount('http://', HTTPAdapter(max_retries=retries))
+
 def query_interpro(seqs):
     """Makes a single request for one or more sequences
     """
@@ -67,7 +78,7 @@ def query_interpro(seqs):
     seqs_md5 = OrderedDict([(md5seq(s), s) for s in seqs])
 
     payload = [('md5', m) for m, s in seqs_md5.items()]
-    response = requests.post(INTERPRO_PRECALC_URL, data=payload)
+    response = sess.post(INTERPRO_PRECALC_URL, data=payload)
 
     data = xmltodict.parse(response.content.decode('utf-8'))
     data = data['kvSequenceEntryXML']['matches']['match']
