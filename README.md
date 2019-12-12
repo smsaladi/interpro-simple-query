@@ -1,13 +1,19 @@
+[![Build Status](https://travis-ci.org/smsaladi/interpro-simple-query.svg?branch=master)](https://travis-ci.org/smsaladi/interpro-simple-query)
+
 Simple Interpro Query
 =====================
 
-This is a simple python implementation to query interpro for
-proteins with precalculated domains. Should work for proteins 
-that are a part of the current release of Uniprot.
+This is a simple python implementation of interproscan's precalculated
+query for proteins with precalculated domains. Should work for proteins 
+that are a part of the current release of Uniprot. This might be easier to
+use than interproscan itself if you know your sequences are all in Uniprot.
 
-This is an alternative to downloading the complete domain matches
-`match_complete.xml` and parsing this file for proteins of interest.
+It is an alternative to downloading the complete domain matches
+[`match_complete.xml.gz`](https://www.ebi.ac.uk/interpro/download/)
+and parsing this file for proteins of interest.
 
-Can break at any point if Interpro changes the structure of their API.
-Based on the interproscan precalculated query code (see comments) 
+Beware: The script can break at any point if Interpro changes the structure
+of their API.
 
+See code for implementation and other details. There are links to relevant bits
+of interproscan to better understand Interpro's API pattern (see docstring).
