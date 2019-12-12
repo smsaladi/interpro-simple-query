@@ -12,6 +12,13 @@ It is an alternative to downloading the complete domain matches
 [`match_complete.xml.gz`](https://www.ebi.ac.uk/interpro/download/)
 and parsing this file for proteins of interest.
 
+Try:
+
+```shell
+pip install -r requirements.txt
+python query_interpro_precalc.py --max_per_query 25 --sleep 10 proteins.fasta > proteins.ipr.ndjson &
+```
+
 Beware: The script can break at any point if Interpro changes the structure
 of their API.
 
