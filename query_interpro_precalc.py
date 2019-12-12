@@ -32,6 +32,7 @@ License: MIT
 
 """
 
+import time
 import argparse
 import hashlib
 from itertools import chain, islice
@@ -105,6 +106,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('seq_fn')
     parser.add_argument('--format', default='fasta')
+    parser.add_argument('--sleep', default='1', type=int,
+        help="Time to wait between queries (sec)")
     parser.add_argument('--max_per_query', default=10, type=int)
 
     args = parser.parse_args()
@@ -115,6 +118,8 @@ def main():
         data = query_interpro(batch)
         # print output as NDjson
         print(ndjson.dumps(data))
+
+        time.sleep(args.sleep)
 
     return
 
